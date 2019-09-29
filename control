@@ -47,6 +47,11 @@ function packbin() {
     rm -f gitversion &>/dev/null
 }
 
+function packdocker() {
+    version=`cat DTVERSION`
+    docker build -t falcon-task:$version .
+}
+
 ## opt
 function start() {
     check_pid
@@ -108,7 +113,7 @@ function check_pid() {
 
 ## usage
 function usage() {
-    echo "$0 build|pack|packbin|start|stop|restart|status|tail|version"
+    echo "$0 build|pack|packbin|packdocker|start|stop|restart|status|tail|version"
 }
 
 ## main
@@ -123,6 +128,9 @@ case $action in
         ;;
     "packbin" )
         packbin
+        ;;
+    "packdocker" )
+        packdocker
         ;;
     ## opt
     "start" )
