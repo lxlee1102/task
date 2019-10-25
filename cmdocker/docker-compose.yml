@@ -1,0 +1,51 @@
+version: '3'
+
+#
+# 1. added myself to open-falcon's docker-compose.yml
+#
+# notes:
+#    export IMAGE_URL=harbor.cloudminds.com/vbn/falcon-modules/
+#    docker-compose up -d
+#    wget --no-check-certificate --http-user=vbn --http-passwd=cmvbn@2016 https://release.slink.datadn.net/download/openfalcon/falcon-docker-db-init.sh && sh falcon-docker-db-init.sh Pwd123456 && rm -f falcon-docker-db-init.sh
+#    docker-compose restart
+
+
+services:
+  falcon-task:
+    container_name: falcon-task
+    image: ${IMAGE_URL}falcon-task:dt0.0.0.1
+    restart: always
+    depends_on:
+      - falcon-logs
+      - falcon-mysql
+      - falcon-agent
+    links:
+      - falcon-logs:logserver.falcon
+      - falcon-mysql:db.falcon
+      - falcon-agent:agent.falcon
+    environment:
+      SYSLOG_SERVER_ADDR: logserver.falcon
+      SYSLOG_SERVER_PORT: 514
+      SYSLOG_SERVER_TCP: tcp
+      MYSQL: root:Pwd123456@tcp(db.falcon:3306)
+      PUSH_API: http://agent.falcon:1988/v1/push
+      TASK_GRAPH_CLUSTER: '
+        "falcon-group-01:6071" : "0 30 0 ? * 1-6",
+        "falcon-group-02:6071" : "0 0 1 ? * 1-6",
+        "falcon-group-03:6071" : "0 30 1 ? * 1-6",
+        "falcon-group-04:6071" : "0 0 2 ? * 1-6"'
+      MODULES_HOST_PORT: '
+        "transfer,falcon-transfer:6060",
+        "graph,falcon-graph-01:6071",
+        "graph,falcon-graph-02:6071",
+        "graph,falcon-graph-03:6071",
+        "graph,falcon-graph-04:6071",
+        "task,falcon-task:8010",
+        "nodata,falcon-nodata:6090"'
+    volumes:
+#      - /etc/localtime:/etc/localtime
+      - ${PWD}/open-falcon/task/config:/open-falcon/task/config
+      - ${PWD}/open-falcon/task/logs:/open-falcon/logs
+    expose:
+      - "8010"
+
