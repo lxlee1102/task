@@ -34,7 +34,8 @@ EOF
 function pack() {
     build
     git log -1 --pretty=%h > gitversion
-    version=`./$app -v`
+    #version=`./$app -v`
+    version=`cat ./DTVERSION`
     tar zcvf $app-$version.tar.gz control $app cfg.example.json gitversion ./test
     rm -f gitversion &>/dev/null
 }
