@@ -28,13 +28,15 @@ WORKDIR $FALCON_DIR
 RUN tar -czf falcon-task.tar.gz ./
 
 
-FROM alpine:3.7 as prog
+FROM harbor.cloudminds.com/library/alpine:3.CM-Beta-1.3
 USER root
+
+ENV PROJECT=mcs MODULE=falcon-task LOGPATH=
 
 ENV FALCON_DIR=/open-falcon FALCON_MODULE=task
 
 RUN mkdir -p $FALCON_DIR && \
-    apk add --no-cache ca-certificates bash util-linux
+    apk add --no-cache ca-certificates bash util-linux tcpdump busybox-extras
 
 WORKDIR $FALCON_DIR
 
