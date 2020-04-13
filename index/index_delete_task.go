@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package index
 
 import (
@@ -23,6 +22,7 @@ import (
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 
+	"github.com/open-falcon/task/g"
 	"github.com/open-falcon/task/proc"
 )
 
@@ -62,7 +62,8 @@ func deleteIndex() error {
 	defer dbConn.Close()
 
 	ts := time.Now().Unix()
-	lastTs := ts - deteleStepInSec
+	//lastTs := ts - deteleStepInSec
+	lastTs := ts - (int64)(g.Config().Index.TTLDays*24*3600)
 	log.Printf("deleteIndex, lastTs %d\n", lastTs)
 
 	// reinit statistics

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package g
 
 import (
@@ -33,6 +32,7 @@ type IndexConfig struct {
 	Dsn        string            `json:"dsn"`
 	MaxIdle    int               `json:"maxIdle"`
 	AutoDelete bool              `json:"autoDelete"`
+	TTLDays    int               `json:"ttlDays"`
 	Cluster    map[string]string `json:"cluster"`
 }
 

@@ -9,6 +9,7 @@
         "dsn": "%%MYSQL%%/graph?loc=Local&parseTime=true",
         "maxIdle": 4,
         "autoDelete": false,
+	"ttlDays":30,
         "cluster":{
             %%TASK_GRAPH_CLUSTER%%
         }

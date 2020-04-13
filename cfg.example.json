@@ -9,6 +9,7 @@
         "dsn": "root:root@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
         "maxIdle": 4,
         "autoDelete": false,
+        "ttlDays": 30,
         "cluster":{
             "test.hostname01:6071" : "0 0 0 ? * 0-5",
             "test.hostname02:6071" : "0 30 0 ? * 0-5"

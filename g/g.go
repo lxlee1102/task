@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package g
 
 import (
@@ -32,9 +31,10 @@ import (
 // 0.0.8: add agents' house_keeper, use relative paths in 'import'
 // 0.0.9: gen falcon.task.alive, use common module, use absolute paths in import
 // 0.0.10: rm monitor, add controller for index cleaner
+// 0.0.11: add index TTL days.
 
 const (
-	VERSION = "0.0.10"
+	VERSION = "0.0.11"
 )
 
 func init() {
