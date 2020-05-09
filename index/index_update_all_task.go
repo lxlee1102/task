@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package index
 
 import (
@@ -103,8 +102,8 @@ func updateIndexOfOneGraph(hostNamePort string) error {
 		return err
 	}
 
-	if data.Data != "ok" {
-		log.Println(hostNamePort+", index update error, bad result,", data.Data)
+	if data.Msg != "ok" {
+		log.Println(hostNamePort+", index update error, bad result,", data.Msg)
 		return err
 	}
 
