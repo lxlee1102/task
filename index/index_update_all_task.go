@@ -22,7 +22,7 @@ import (
 	"net/http"
 	"time"
 
-	cron "github.com/toolkits/cron"
+	cron "github.com/robfig/cron/v3"
 	nhttpclient "github.com/toolkits/http/httpclient"
 	ntime "github.com/toolkits/time"
 
@@ -35,14 +35,19 @@ const (
 )
 
 var (
-	indexUpdateAllCron = cron.New()
+	indexUpdateAllCron = cron.New(cron.WithSeconds())
 )
 
 // 启动 索引全量更新 定时任务
 func StartIndexUpdateAllTask() {
 	for graphAddr, cronSpec := range g.Config().Index.Cluster {
 		ga := graphAddr
-		indexUpdateAllCron.AddFuncCC(cronSpec, func() { UpdateIndexOfOneGraph(ga, "cron") }, 1)
+		_, err := indexUpdateAllCron.AddFunc(cronSpec, func() { UpdateIndexOfOneGraph(ga, "cron") })
+		if err != nil {
+			log.Printf("error: startIndexUpdateTask: %s %s, err:%v", ga, cronSpec, err)
+		} else {
+			log.Printf("startIndexUpdateTask: %s %s", ga, cronSpec)
+		}
 	}
 
 	indexUpdateAllCron.Start()
